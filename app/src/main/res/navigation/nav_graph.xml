@@ -40,20 +40,20 @@
         android:id="@+id/addEditItemFragment"
         android:name="me.keremdurgut.zero_trust_personal_vault.ui.AddEditItemFragment"
         android:label="Parola Ekle/Düzenle"
-        tools:layout="@layout/fragment_add_edit_item">
-
-        <!-- Düzenleme modu için item ID argümanı -->
-        <argument
-            android:name="itemId"
-            app:argType="long"
-            android:defaultValue="-1L" />
-    </fragment>
+        tools:layout="@layout/fragment_add_edit_item" />
 
     <!-- Ayarlar Ekranı -->
     <fragment
         android:id="@+id/settingsFragment"
         android:name="me.keremdurgut.zero_trust_personal_vault.ui.SettingsFragment"
         android:label="Ayarlar"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings">
+
+        <action
+            android:id="@+id/action_settings_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

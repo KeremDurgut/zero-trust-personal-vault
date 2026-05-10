@@ -20,7 +20,7 @@ public class AESCrypt {
 
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
     private static final String KEY_ALGORITHM = "AES";
-    private static final String SECRET_KEY_FACTORY_ALGORITHM = "PBKDF2WithHmacSHA256";
+    private static final String SECRET_KEY_FACTORY_ALGORITHM = "PBKDF2WithHmacSHA1";
     private static final int KEY_LENGTH = 256;
     private static final int ITERATION_COUNT = 65536;
     private static final int IV_LENGTH = 16;

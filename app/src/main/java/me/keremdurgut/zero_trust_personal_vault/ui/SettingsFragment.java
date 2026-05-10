@@ -87,8 +87,8 @@ public class SettingsFragment extends Fragment {
         }
         binding.tilNewPinConfirm.setError(null);
 
-        // PIN'i değiştir
-        PinManager.changePin(requireContext(), currentPin, newPin);
+        // PIN'i değiştir (verifyPin zaten yukarıda çağrıldı, doğrudan createPin kullan)
+        PinManager.createPin(requireContext(), newPin);
         Toast.makeText(requireContext(), R.string.success_pin_changed, Toast.LENGTH_SHORT).show();
 
         // Alanları temizle
@@ -113,9 +113,9 @@ public class SettingsFragment extends Fragment {
                     Toast.makeText(requireContext(), R.string.toast_data_cleared,
                             Toast.LENGTH_SHORT).show();
 
-                    // Login ekranına geri dön
+                    // Login ekranına geri dön (tanımlı action ile)
                     Navigation.findNavController(requireView())
-                            .navigate(R.id.loginFragment);
+                            .navigate(R.id.action_settings_to_login);
                 })
                 .setNegativeButton(R.string.dialog_clear_no, null)
                 .show();
