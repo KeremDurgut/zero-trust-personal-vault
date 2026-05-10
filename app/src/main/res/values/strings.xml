@@ -60,4 +60,15 @@
     <string name="notification_channel_desc">Yeni parola kaydedildiğinde bildirim gönderir</string>
     <string name="notification_title">Yeni Parola Kaydedildi</string>
     <string name="notification_text">Kasaya yeni bir parola başarıyla eklendi.</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_skip">Atla</string>
+    <string name="onboarding_next">İleri</string>
+    <string name="onboarding_start">Başla</string>
+    <string name="onboarding_title_1">Zero-Trust Personal Vault</string>
+    <string name="onboarding_desc_1">Parolalarınızı güvenle saklayabileceğiniz yerel şifreli kasa uygulamasına hoş geldiniz.</string>
+    <string name="onboarding_title_2">AES-256 Şifreleme</string>
+    <string name="onboarding_desc_2">Tüm parolalarınız AES-256 şifreleme ile korunur. Verileriniz yalnızca sizin cihazınızda, şifreli olarak saklanır.</string>
+    <string name="onboarding_title_3">Kolay Yönetim</string>
+    <string name="onboarding_desc_3">Parolalarınızı kolayca ekleyin, düzenleyin ve tek dokunuşla kopyalayın. Hepsi bir PIN koduyla korunur.</string>
 </resources>

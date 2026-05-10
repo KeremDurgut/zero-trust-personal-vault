@@ -3,7 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/onboardingFragment">
+
+    <!-- Onboarding Ekranı -->
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="me.keremdurgut.zero_trust_personal_vault.ui.OnboardingFragment"
+        android:label="Tanıtım"
+        tools:layout="@layout/fragment_onboarding">
+
+        <action
+            android:id="@+id/action_onboarding_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/onboardingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <!-- Login Ekranı -->
     <fragment
