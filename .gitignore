@@ -1,0 +1,35 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+# Yerel derleme ve çıktı dizinleri
+*.iml
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# Modül bazlı derleme dizinleri
+app/build/
+
+# Keystore dosyaları (Güvenlik için yüklenmez)
+*.jks
+*.keystore
+
+# Google Services (Kullanılırsa)
+google-services.json

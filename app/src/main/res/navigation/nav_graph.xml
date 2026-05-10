@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <!-- Login Ekranı -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="me.keremdurgut.zero_trust_personal_vault.ui.LoginFragment"
+        android:label="Giriş"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_login_to_vaultList"
+            app:destination="@id/vaultListFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Parola Listesi Ekranı -->
+    <fragment
+        android:id="@+id/vaultListFragment"
+        android:name="me.keremdurgut.zero_trust_personal_vault.ui.VaultListFragment"
+        android:label="Parolalarım"
+        tools:layout="@layout/fragment_vault_list">
+
+        <action
+            android:id="@+id/action_vaultList_to_addEditItem"
+            app:destination="@id/addEditItemFragment" />
+
+        <action
+            android:id="@+id/action_vaultList_to_settings"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+
+    <!-- Parola Ekleme/Düzenleme Ekranı -->
+    <fragment
+        android:id="@+id/addEditItemFragment"
+        android:name="me.keremdurgut.zero_trust_personal_vault.ui.AddEditItemFragment"
+        android:label="Parola Ekle/Düzenle"
+        tools:layout="@layout/fragment_add_edit_item">
+
+        <!-- Düzenleme modu için item ID argümanı -->
+        <argument
+            android:name="itemId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
+
+    <!-- Ayarlar Ekranı -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="me.keremdurgut.zero_trust_personal_vault.ui.SettingsFragment"
+        android:label="Ayarlar"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>

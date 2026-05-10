@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">Zero-Trust Personal Vault</string>
+
+    <!-- Login -->
+    <string name="login_title">Güvenli Kasa</string>
+    <string name="login_subtitle">Ana PIN kodunuzu giriniz</string>
+    <string name="hint_enter_pin">PIN Kodunu Girin</string>
+    <string name="hint_confirm_pin">PIN Kodunu Tekrar Girin</string>
+    <string name="btn_login">Giriş Yap</string>
+    <string name="btn_setup">PIN Oluştur</string>
+    <string name="setup_title">İlk Kurulum</string>
+    <string name="setup_subtitle">Yeni bir Ana PIN kodu belirleyin</string>
+    <string name="error_pin_empty">PIN kodu boş olamaz</string>
+    <string name="error_pin_min_length">PIN kodu en az 4 karakter olmalıdır</string>
+    <string name="error_pin_mismatch">PIN kodları eşleşmiyor</string>
+    <string name="error_wrong_pin">Yanlış PIN kodu</string>
+    <string name="success_pin_created">PIN kodu başarıyla oluşturuldu</string>
+
+    <!-- Vault List -->
+    <string name="vault_title">Parolalarım</string>
+    <string name="empty_vault">Henüz kayıtlı parola bulunmuyor.\nEklemek için + butonuna tıklayın.</string>
+    <string name="toast_password_copied">Parola panoya kopyalandı</string>
+    <string name="dialog_delete_title">Parolayı Sil</string>
+    <string name="dialog_delete_message">Bu parolayı silmek istediğinize emin misiniz?</string>
+    <string name="dialog_delete_yes">Evet, Sil</string>
+    <string name="dialog_delete_no">İptal</string>
+    <string name="toast_item_deleted">Parola başarıyla silindi</string>
+
+    <!-- Add/Edit Item -->
+    <string name="add_item_title">Yeni Parola Ekle</string>
+    <string name="edit_item_title">Parolayı Düzenle</string>
+    <string name="hint_title">Başlık (ör. Gmail, Instagram)</string>
+    <string name="hint_username">Kullanıcı Adı / E-posta</string>
+    <string name="hint_password">Parola</string>
+    <string name="btn_save">Kaydet</string>
+    <string name="error_title_empty">Başlık alanı boş olamaz</string>
+    <string name="error_password_empty">Parola alanı boş olamaz</string>
+    <string name="toast_item_saved">Parola başarıyla kaydedildi</string>
+    <string name="toast_item_updated">Parola başarıyla güncellendi</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Ayarlar</string>
+    <string name="settings_change_pin">Ana PIN Kodunu Değiştir</string>
+    <string name="settings_clear_data">Tüm Verileri Temizle</string>
+    <string name="settings_about">Hakkında</string>
+    <string name="settings_about_text">Zero-Trust Personal Vault v1.0\nGüvenli yerel parola yönetimi uygulaması.</string>
+    <string name="hint_current_pin">Mevcut PIN Kodu</string>
+    <string name="hint_new_pin">Yeni PIN Kodu</string>
+    <string name="hint_new_pin_confirm">Yeni PIN Tekrar</string>
+    <string name="error_current_pin_wrong">Mevcut PIN kodu yanlış</string>
+    <string name="success_pin_changed">PIN kodu başarıyla değiştirildi</string>
+    <string name="dialog_clear_title">Verileri Temizle</string>
+    <string name="dialog_clear_message">Tüm parolalar kalıcı olarak silinecek. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?</string>
+    <string name="dialog_clear_yes">Evet, Temizle</string>
+    <string name="dialog_clear_no">İptal</string>
+    <string name="toast_data_cleared">Tüm veriler temizlendi</string>
+
+    <!-- Notification -->
+    <string name="notification_channel_name">Parola Bildirimleri</string>
+    <string name="notification_channel_desc">Yeni parola kaydedildiğinde bildirim gönderir</string>
+    <string name="notification_title">Yeni Parola Kaydedildi</string>
+    <string name="notification_text">Kasaya yeni bir parola başarıyla eklendi.</string>
+</resources>
