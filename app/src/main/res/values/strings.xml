@@ -8,7 +8,7 @@
     <string name="auth_register_subtitle">Let\'s get you setup with a new master password!</string>
     <string name="auth_login_button">LOGIN</string>
     <string name="auth_register_button">REGISTER</string>
-    <string name="hint_master_password">PASSWORD</string>
+    <string name="hint_master_password">Password</string>
 
     <!-- Auth Errors -->
     <string name="error_master_password_empty">Password cannot be empty</string>

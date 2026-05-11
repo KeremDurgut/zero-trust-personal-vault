@@ -66,7 +66,7 @@ public class AddEditItemFragment extends Fragment {
         binding.saveEntryButton.setOnClickListener(v -> saveItem());
 
         // Geri butonu
-        binding.backNavButton.setOnClickListener(v -> 
+        binding.backNavButton.setOnClickListener(v ->
             Navigation.findNavController(requireView()).popBackStack()
         );
 

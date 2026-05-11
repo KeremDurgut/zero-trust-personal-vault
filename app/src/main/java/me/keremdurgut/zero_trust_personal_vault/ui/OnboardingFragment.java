@@ -1,12 +1,18 @@
 package me.keremdurgut.zero_trust_personal_vault.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +24,12 @@ import me.keremdurgut.zero_trust_personal_vault.util.PinManager;
 public class OnboardingFragment extends Fragment {
 
     private FragmentOnboardingBinding binding;
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+
+                navigateToLogin();
+            });
 
     @Nullable
     @Override
@@ -41,7 +53,17 @@ public class OnboardingFragment extends Fragment {
 
     private void finishOnboarding() {
         PinManager.setOnboardingDone(requireContext(), true);
-        navigateToLogin();
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            } else {
+                navigateToLogin();
+            }
+        } else {
+            navigateToLogin();
+        }
     }
 
     private void navigateToLogin() {
