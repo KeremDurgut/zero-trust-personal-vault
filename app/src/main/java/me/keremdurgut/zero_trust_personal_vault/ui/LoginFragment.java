@@ -43,12 +43,14 @@ public class LoginFragment extends Fragment {
             // Setup Mode (Register)
             binding.authTitleText.setText(R.string.auth_register_title);
             binding.authSubtitleText.setText(R.string.auth_register_subtitle);
+            binding.confirmPasswordInputLayout.setVisibility(View.VISIBLE);
             binding.authButton.setText(R.string.auth_register_button);
             binding.authButton.setOnClickListener(v -> handleSetup());
         } else {
             // Login Mode
             binding.authTitleText.setText(R.string.auth_login_title);
             binding.authSubtitleText.setText(R.string.auth_login_subtitle);
+            binding.confirmPasswordInputLayout.setVisibility(View.GONE);
             binding.authButton.setText(R.string.auth_login_button);
             binding.authButton.setOnClickListener(v -> handleLogin());
         }
@@ -58,8 +60,9 @@ public class LoginFragment extends Fragment {
      * Initial Setup: Creates new master password.
      */
     private void handleSetup() {
-        if (binding.passwordEditText.getText() == null) return;
+        if (binding.passwordEditText.getText() == null || binding.confirmPasswordEditText.getText() == null) return;
         String password = binding.passwordEditText.getText().toString().trim();
+        String confirmPassword = binding.confirmPasswordEditText.getText().toString().trim();
 
         if (password.isEmpty()) {
             binding.passwordInputLayout.setError(getString(R.string.error_master_password_empty));
@@ -72,6 +75,12 @@ public class LoginFragment extends Fragment {
             return;
         }
         binding.passwordInputLayout.setError(null);
+
+        if (!password.equals(confirmPassword)) {
+            binding.confirmPasswordInputLayout.setError(getString(R.string.error_master_password_mismatch));
+            return;
+        }
+        binding.confirmPasswordInputLayout.setError(null);
 
         // Create and save password
         PinManager.createPin(requireContext(), password);
