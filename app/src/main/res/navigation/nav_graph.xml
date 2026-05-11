@@ -19,12 +19,12 @@
             app:popUpToInclusive="true" />
     </fragment>
 
-    <!-- Login Ekranı -->
+    <!-- Login/Auth Ekranı -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="me.keremdurgut.zero_trust_personal_vault.ui.LoginFragment"
         android:label="Giriş"
-        tools:layout="@layout/fragment_login">
+        tools:layout="@layout/fragment_auth">
 
         <action
             android:id="@+id/action_login_to_vaultList"

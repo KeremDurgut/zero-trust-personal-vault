@@ -1,74 +1,97 @@
 <resources>
     <string name="app_name">Zero-Trust Personal Vault</string>
 
-    <!-- Login -->
-    <string name="login_title">Güvenli Kasa</string>
-    <string name="login_subtitle">Ana PIN kodunuzu giriniz</string>
-    <string name="hint_enter_pin">PIN Kodunu Girin</string>
-    <string name="hint_confirm_pin">PIN Kodunu Tekrar Girin</string>
-    <string name="btn_login">Giriş Yap</string>
-    <string name="btn_setup">PIN Oluştur</string>
-    <string name="setup_title">İlk Kurulum</string>
-    <string name="setup_subtitle">Yeni bir Ana PIN kodu belirleyin</string>
-    <string name="error_pin_empty">PIN kodu boş olamaz</string>
-    <string name="error_pin_min_length">PIN kodu en az 4 karakter olmalıdır</string>
-    <string name="error_pin_mismatch">PIN kodları eşleşmiyor</string>
-    <string name="error_wrong_pin">Yanlış PIN kodu</string>
-    <string name="success_pin_created">PIN kodu başarıyla oluşturuldu</string>
+    <!-- Auth (Login & Register combined) -->
+    <string name="auth_login_title">LOGIN</string>
+    <string name="auth_register_title">REGISTER</string>
+    <string name="auth_login_subtitle">Enter your master password</string>
+    <string name="auth_register_subtitle">Let\'s get you setup with a new master password!</string>
+    <string name="auth_login_button">LOGIN</string>
+    <string name="auth_register_button">REGISTER</string>
+    <string name="hint_master_password">PASSWORD</string>
+
+    <!-- Auth Errors -->
+    <string name="error_master_password_empty">Password cannot be empty</string>
+    <string name="error_master_password_min_length">Password must be at least 4 characters</string>
+    <string name="error_master_password_mismatch">Passwords do not match</string>
+    <string name="error_wrong_master_password">Incorrect password</string>
+    <string name="success_master_password_created">Password successfully created</string>
 
     <!-- Vault List -->
-    <string name="vault_title">Parolalarım</string>
-    <string name="empty_vault">Henüz kayıtlı parola bulunmuyor.\nEklemek için + butonuna tıklayın.</string>
-    <string name="toast_password_copied">Parola panoya kopyalandı</string>
-    <string name="dialog_delete_title">Parolayı Sil</string>
-    <string name="dialog_delete_message">Bu parolayı silmek istediğinize emin misiniz?</string>
-    <string name="dialog_delete_yes">Evet, Sil</string>
-    <string name="dialog_delete_no">İptal</string>
-    <string name="toast_item_deleted">Parola başarıyla silindi</string>
+    <string name="vault_title">My Passwords</string>
+    <string name="stored_passwords_label">Passwords Stored</string>
+    <string name="search_hint">Search Websites..</string>
+    <string name="empty_vault">No passwords saved yet.\nClick the + button to add one.</string>
+    <string name="toast_password_copied">Password copied to clipboard</string>
+    <string name="dialog_delete_title">Delete Password</string>
+    <string name="dialog_delete_message">Are you sure you want to delete this password?</string>
+    <string name="dialog_delete_yes">Yes, Delete</string>
+    <string name="dialog_delete_no">Cancel</string>
+    <string name="toast_item_deleted">Password deleted successfully</string>
 
     <!-- Add/Edit Item -->
-    <string name="add_item_title">Yeni Parola Ekle</string>
-    <string name="edit_item_title">Parolayı Düzenle</string>
-    <string name="hint_title">Başlık (ör. Gmail, Instagram)</string>
-    <string name="hint_username">Kullanıcı Adı / E-posta</string>
-    <string name="hint_password">Parola</string>
-    <string name="btn_save">Kaydet</string>
-    <string name="error_title_empty">Başlık alanı boş olamaz</string>
-    <string name="error_password_empty">Parola alanı boş olamaz</string>
-    <string name="toast_item_saved">Parola başarıyla kaydedildi</string>
-    <string name="toast_item_updated">Parola başarıyla güncellendi</string>
+    <string name="add_item_header">ADD NEW</string>
+    <string name="edit_item_header">UPDATE ITEM</string>
+    <string name="add_item_button">ADD PASSWORD</string>
+    <string name="update_item_button">UPDATE PASSWORD</string>
+    <string name="hint_item_name">NAME</string>
+    <string name="hint_item_email">EMAIL / USERNAME</string>
+    <string name="hint_item_password">PASSWORD</string>
+    <string name="placeholder_item_name">Website/App Name</string>
+    <string name="placeholder_item_email">Email / Username</string>
+    <string name="placeholder_item_password">Password</string>
+    <string name="btn_generate_password">GENERATE NEW</string>
+    <string name="error_title_empty">Title cannot be empty</string>
+    <string name="error_password_empty">Password cannot be empty</string>
+    <string name="toast_item_saved">Password saved successfully</string>
+    <string name="toast_item_updated">Password updated successfully</string>
 
     <!-- Settings -->
-    <string name="settings_title">Ayarlar</string>
-    <string name="settings_change_pin">Ana PIN Kodunu Değiştir</string>
-    <string name="settings_clear_data">Tüm Verileri Temizle</string>
-    <string name="settings_about">Hakkında</string>
-    <string name="settings_about_text">Zero-Trust Personal Vault v1.0\nGüvenli yerel parola yönetimi uygulaması.</string>
-    <string name="hint_current_pin">Mevcut PIN Kodu</string>
-    <string name="hint_new_pin">Yeni PIN Kodu</string>
-    <string name="hint_new_pin_confirm">Yeni PIN Tekrar</string>
-    <string name="error_current_pin_wrong">Mevcut PIN kodu yanlış</string>
-    <string name="success_pin_changed">PIN kodu başarıyla değiştirildi</string>
-    <string name="dialog_clear_title">Verileri Temizle</string>
-    <string name="dialog_clear_message">Tüm parolalar kalıcı olarak silinecek. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?</string>
-    <string name="dialog_clear_yes">Evet, Temizle</string>
-    <string name="dialog_clear_no">İptal</string>
-    <string name="toast_data_cleared">Tüm veriler temizlendi</string>
+    <string name="settings_title">CHANGE\nPASSWORD</string>
+    <string name="settings_change_master_password">Change Master Password</string>
+    <string name="settings_clear_data">Clear All Data</string>
+    <string name="settings_about">About</string>
+    <string name="settings_about_text">Zero-Trust Personal Vault v1.0\nSecure local password management application.</string>
+    <string name="hint_current_master_password">Current Password</string>
+    <string name="hint_new_master_password">New Password</string>
+    <string name="hint_new_master_password_confirm">Confirm New Password</string>
+    <string name="error_current_master_password_wrong">Incorrect current password</string>
+    <string name="success_master_password_changed">Password changed successfully</string>
+    <string name="dialog_clear_title">Clear Data</string>
+    <string name="dialog_clear_message">All passwords will be permanently deleted. This action cannot be undone. Do you want to continue?</string>
+    <string name="dialog_clear_yes">Yes, Clear</string>
+    <string name="dialog_clear_no">Cancel</string>
+    <string name="toast_data_cleared">All data cleared</string>
+    <string name="clear_data_description">Permanently deletes all saved passwords.</string>
+
+    <!-- Content Descriptions -->
+    <string name="desc_stars_icon">Three decorative stars</string>
+    <string name="desc_back_nav">Navigate Back</string>
+    <string name="desc_settings_button">Settings</string>
+    <string name="desc_add_entry_fab">Add New Password</string>
+    <string name="desc_copy_password">Copy Password</string>
 
     <!-- Notification -->
-    <string name="notification_channel_name">Parola Bildirimleri</string>
-    <string name="notification_channel_desc">Yeni parola kaydedildiğinde bildirim gönderir</string>
-    <string name="notification_title">Yeni Parola Kaydedildi</string>
-    <string name="notification_text">Kasaya yeni bir parola başarıyla eklendi.</string>
+    <string name="notification_channel_name">Password Notifications</string>
+    <string name="notification_channel_desc">Sends notifications when a new password is saved</string>
+    <string name="notification_title">New Password Saved</string>
+    <string name="notification_text">A new password has been successfully added to the vault.</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_skip">Atla</string>
-    <string name="onboarding_next">İleri</string>
-    <string name="onboarding_start">Başla</string>
-    <string name="onboarding_title_1">Zero-Trust Personal Vault</string>
-    <string name="onboarding_desc_1">Parolalarınızı güvenle saklayabileceğiniz yerel şifreli kasa uygulamasına hoş geldiniz.</string>
-    <string name="onboarding_title_2">AES-256 Şifreleme</string>
-    <string name="onboarding_desc_2">Tüm parolalarınız AES-256 şifreleme ile korunur. Verileriniz yalnızca sizin cihazınızda, şifreli olarak saklanır.</string>
-    <string name="onboarding_title_3">Kolay Yönetim</string>
-    <string name="onboarding_desc_3">Parolalarınızı kolayca ekleyin, düzenleyin ve tek dokunuşla kopyalayın. Hepsi bir PIN koduyla korunur.</string>
+    <string name="onboarding_begin">Let\'s begin</string>
+    <string name="onboarding_page_1">1</string>
+    <string name="onboarding_page_2">2</string>
+    <string name="onboarding_page_3">3</string>
+    <string name="onboarding_1_title_1">GENERATE</string>
+    <string name="onboarding_1_title_2">SECURE</string>
+    <string name="onboarding_1_title_3">PASSWORDS.</string>
+    <string name="onboarding_1_desc">Stop using unsecure passwords for your online accounts, level up with Zero-Trust Vault. Get the most secure and difficult-to-crack passwords.</string>
+    <string name="onboarding_2_title_1">ALL YOUR</string>
+    <string name="onboarding_2_title_2">PASSWORDS ARE</string>
+    <string name="onboarding_2_title_3">HERE.</string>
+    <string name="onboarding_2_desc">Store and manage all of your passwords from one place. Don\'t remember hundreds of passwords, just remember one.</string>
+    <string name="onboarding_3_title_1">DON\'T TYPE,</string>
+    <string name="onboarding_3_title_2">COPY PASTE YOUR</string>
+    <string name="onboarding_3_title_3">CREDENTIALS.</string>
+    <string name="onboarding_3_desc">Don\'t compromise your passwords by typing them in public, with Zero-Trust Vault you can copy and paste them and keep your credentials secure.</string>
 </resources>

@@ -12,23 +12,23 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import me.keremdurgut.zero_trust_personal_vault.R;
-import me.keremdurgut.zero_trust_personal_vault.databinding.FragmentLoginBinding;
+import me.keremdurgut.zero_trust_personal_vault.databinding.FragmentAuthBinding;
 import me.keremdurgut.zero_trust_personal_vault.util.PinManager;
 
 /**
- * Giriş Fragment'ı - Ana PIN kodu ile kimlik doğrulama.
- * İlk kurulumda PIN oluşturma, sonraki girişlerde PIN doğrulama yapar.
+ * Auth Fragment - Handles both Login and Master Password Setup (Register).
+ * Displays different strings based on whether the setup is complete.
  */
 public class LoginFragment extends Fragment {
 
-    private FragmentLoginBinding binding;
+    private FragmentAuthBinding binding;
     private boolean isSetupMode = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentLoginBinding.inflate(inflater, container, false);
+        binding = FragmentAuthBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -36,91 +36,80 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // İlk kurulum mu yoksa normal giriş mi kontrol et
+        // Check if setup is done
         isSetupMode = !PinManager.isSetupDone(requireContext());
 
         if (isSetupMode) {
-            // İlk kurulum modu
-            binding.tvLoginTitle.setText(R.string.setup_title);
-            binding.tvLoginSubtitle.setText(R.string.setup_subtitle);
-            binding.tilPinConfirm.setVisibility(View.VISIBLE);
-            binding.btnLogin.setText(R.string.btn_setup);
+            // Setup Mode (Register)
+            binding.authTitleText.setText(R.string.auth_register_title);
+            binding.authSubtitleText.setText(R.string.auth_register_subtitle);
+            binding.authButton.setText(R.string.auth_register_button);
+            binding.authButton.setOnClickListener(v -> handleSetup());
         } else {
-            // Normal giriş modu
-            binding.tvLoginTitle.setText(R.string.login_title);
-            binding.tvLoginSubtitle.setText(R.string.login_subtitle);
-            binding.tilPinConfirm.setVisibility(View.GONE);
-            binding.btnLogin.setText(R.string.btn_login);
+            // Login Mode
+            binding.authTitleText.setText(R.string.auth_login_title);
+            binding.authSubtitleText.setText(R.string.auth_login_subtitle);
+            binding.authButton.setText(R.string.auth_login_button);
+            binding.authButton.setOnClickListener(v -> handleLogin());
         }
-
-        binding.btnLogin.setOnClickListener(v -> {
-            if (isSetupMode) {
-                handleSetup();
-            } else {
-                handleLogin();
-            }
-        });
     }
 
     /**
-     * İlk kurulum: Yeni PIN oluşturur.
+     * Initial Setup: Creates new master password.
      */
     private void handleSetup() {
-        String pin = binding.etPin.getText().toString().trim();
-        String pinConfirm = binding.etPinConfirm.getText().toString().trim();
+        if (binding.passwordEditText.getText() == null) return;
+        String password = binding.passwordEditText.getText().toString().trim();
 
-        if (pin.isEmpty()) {
-            binding.tilPin.setError(getString(R.string.error_pin_empty));
+        if (password.isEmpty()) {
+            binding.passwordInputLayout.setError(getString(R.string.error_master_password_empty));
             return;
         }
-        binding.tilPin.setError(null);
+        binding.passwordInputLayout.setError(null);
 
-        if (pin.length() < 4) {
-            binding.tilPin.setError(getString(R.string.error_pin_min_length));
+        if (password.length() < 4) {
+            binding.passwordInputLayout.setError(getString(R.string.error_master_password_min_length));
             return;
         }
-        binding.tilPin.setError(null);
+        binding.passwordInputLayout.setError(null);
 
-        if (!pin.equals(pinConfirm)) {
-            binding.tilPinConfirm.setError(getString(R.string.error_pin_mismatch));
-            return;
-        }
-        binding.tilPinConfirm.setError(null);
+        // Create and save password
+        PinManager.createPin(requireContext(), password);
+        Toast.makeText(requireContext(), R.string.success_master_password_created, Toast.LENGTH_SHORT).show();
 
-        // PIN oluştur ve kaydet
-        PinManager.createPin(requireContext(), pin);
-        Toast.makeText(requireContext(), R.string.success_pin_created, Toast.LENGTH_SHORT).show();
-
-        // Vault listesine yönlendir
+        // Navigate to Vault List
         navigateToVaultList();
     }
 
     /**
-     * Normal giriş: PIN doğrulama.
+     * Normal Login: Verifies master password.
      */
     private void handleLogin() {
-        String pin = binding.etPin.getText().toString().trim();
+        if (binding.passwordEditText.getText() == null) return;
+        String password = binding.passwordEditText.getText().toString().trim();
 
-        if (pin.isEmpty()) {
-            binding.tilPin.setError(getString(R.string.error_pin_empty));
+        if (password.isEmpty()) {
+            binding.passwordInputLayout.setError(getString(R.string.error_master_password_empty));
             return;
         }
-        binding.tilPin.setError(null);
+        binding.passwordInputLayout.setError(null);
 
-        if (PinManager.verifyPin(requireContext(), pin)) {
-            // Doğru PIN - vault listesine yönlendir
+        if (PinManager.verifyPin(requireContext(), password)) {
+            // Correct password - navigate to vault
             navigateToVaultList();
         } else {
-            binding.tilPin.setError(getString(R.string.error_wrong_pin));
+            binding.passwordInputLayout.setError(getString(R.string.error_wrong_master_password));
         }
     }
 
     /**
-     * Vault listesine geçiş yapar.
+     * Transitions to the Vault List screen.
      */
     private void navigateToVaultList() {
-        Navigation.findNavController(requireView())
-                .navigate(R.id.action_login_to_vaultList);
+        if (getView() != null) {
+            Navigation.findNavController(getView())
+                    .navigate(R.id.action_login_to_vaultList);
+        }
     }
 
     @Override

@@ -12,8 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import java.util.UUID;
+
 import me.keremdurgut.zero_trust_personal_vault.R;
-import me.keremdurgut.zero_trust_personal_vault.data.VaultItem;
 import me.keremdurgut.zero_trust_personal_vault.databinding.FragmentAddEditItemBinding;
 import me.keremdurgut.zero_trust_personal_vault.util.NotificationHelper;
 import me.keremdurgut.zero_trust_personal_vault.viewmodel.VaultViewModel;
@@ -52,15 +53,28 @@ public class AddEditItemFragment extends Fragment {
 
         if (isEditMode) {
             // Düzenleme modu - mevcut verileri form alanlarına doldur
-            binding.tvFormTitle.setText(R.string.edit_item_title);
+            binding.addNewTitleText.setText(R.string.edit_item_header);
+            binding.saveEntryButton.setText(R.string.update_item_button);
             loadItemData();
         } else {
             // Ekleme modu
-            binding.tvFormTitle.setText(R.string.add_item_title);
+            binding.addNewTitleText.setText(R.string.add_item_header);
+            binding.saveEntryButton.setText(R.string.add_item_button);
         }
 
         // Kaydet butonu
-        binding.btnSave.setOnClickListener(v -> saveItem());
+        binding.saveEntryButton.setOnClickListener(v -> saveItem());
+
+        // Geri butonu
+        binding.backNavButton.setOnClickListener(v -> 
+            Navigation.findNavController(requireView()).popBackStack()
+        );
+
+        // Parola oluşturma butonu (Basit bir örnek)
+        binding.generatePasswordButton.setOnClickListener(v -> {
+            String generated = UUID.randomUUID().toString().substring(0, 12);
+            binding.passwordEditText.setText(generated);
+        });
     }
 
     /**
@@ -70,11 +84,11 @@ public class AddEditItemFragment extends Fragment {
         viewModel.loadItemById(editItemId);
         viewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
             if (item != null) {
-                binding.etTitle.setText(item.getTitle());
-                binding.etUsername.setText(item.getUsername());
+                binding.nameEditText.setText(item.getTitle());
+                binding.emailEditText.setText(item.getUsername());
                 // Şifreli parolayı çöz ve göster
                 String decryptedPassword = viewModel.decryptPassword(item.getEncryptedPassword());
-                binding.etPassword.setText(decryptedPassword);
+                binding.passwordEditText.setText(decryptedPassword);
             }
         });
     }
@@ -83,22 +97,24 @@ public class AddEditItemFragment extends Fragment {
      * Form doğrulama ve kaydetme işlemi.
      */
     private void saveItem() {
-        String title = binding.etTitle.getText().toString().trim();
-        String username = binding.etUsername.getText().toString().trim();
-        String password = binding.etPassword.getText().toString().trim();
+        if (binding.nameEditText.getText() == null || binding.passwordEditText.getText() == null || binding.emailEditText.getText() == null) return;
+        
+        String title = binding.nameEditText.getText().toString().trim();
+        String username = binding.emailEditText.getText().toString().trim();
+        String password = binding.passwordEditText.getText().toString().trim();
 
         // Doğrulama
         if (title.isEmpty()) {
-            binding.tilTitle.setError(getString(R.string.error_title_empty));
+            binding.nameInputLayout.setError(getString(R.string.error_title_empty));
             return;
         }
-        binding.tilTitle.setError(null);
+        binding.nameInputLayout.setError(null);
 
         if (password.isEmpty()) {
-            binding.tilPassword.setError(getString(R.string.error_password_empty));
+            binding.passwordInputLayout.setError(getString(R.string.error_password_empty));
             return;
         }
-        binding.tilPassword.setError(null);
+        binding.passwordInputLayout.setError(null);
 
         if (isEditMode) {
             // Güncelleme

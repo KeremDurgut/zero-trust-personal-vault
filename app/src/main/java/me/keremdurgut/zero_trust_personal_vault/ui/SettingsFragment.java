@@ -19,7 +19,7 @@ import me.keremdurgut.zero_trust_personal_vault.util.PinManager;
 import me.keremdurgut.zero_trust_personal_vault.viewmodel.VaultViewModel;
 
 /**
- * Ayarlar Fragment'ı - PIN değiştirme ve veri temizleme işlemleri.
+ * Settings Fragment - Password change and data clearing operations.
  */
 public class SettingsFragment extends Fragment {
 
@@ -40,80 +40,89 @@ public class SettingsFragment extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(VaultViewModel.class);
 
-        // PIN Değiştir butonu
-        binding.btnChangePin.setOnClickListener(v -> handleChangePin());
+        // Back button - navigate to home page (Vault List)
+        binding.backNavButton.setOnClickListener(v -> 
+            Navigation.findNavController(requireView()).popBackStack()
+        );
 
-        // Verileri Temizle butonu
-        binding.btnClearData.setOnClickListener(v -> handleClearData());
+        // Change Password button
+        binding.changePasswordButton.setOnClickListener(v -> handleChangePassword());
+
+        // Clear Data button
+        binding.clearDataButton.setOnClickListener(v -> handleClearData());
     }
 
     /**
-     * PIN kodunu değiştirir.
-     * Mevcut PIN doğrulandıktan sonra yeni PIN kaydedilir.
+     * Changes the master password.
+     * After the current password is verified, the new password is saved.
      */
-    private void handleChangePin() {
-        String currentPin = binding.etCurrentPin.getText().toString().trim();
-        String newPin = binding.etNewPin.getText().toString().trim();
-        String newPinConfirm = binding.etNewPinConfirm.getText().toString().trim();
+    private void handleChangePassword() {
+        if (binding.currentPasswordEditText.getText() == null || 
+            binding.newPasswordEditText.getText() == null || 
+            binding.confirmPasswordEditText.getText() == null) return;
 
-        // Doğrulamalar
-        if (currentPin.isEmpty()) {
-            binding.tilCurrentPin.setError(getString(R.string.error_pin_empty));
+        String currentPassword = binding.currentPasswordEditText.getText().toString().trim();
+        String newPassword = binding.newPasswordEditText.getText().toString().trim();
+        String confirmPassword = binding.confirmPasswordEditText.getText().toString().trim();
+
+        // Validations
+        if (currentPassword.isEmpty()) {
+            binding.currentPasswordInputLayout.setError(getString(R.string.error_master_password_empty));
             return;
         }
-        binding.tilCurrentPin.setError(null);
+        binding.currentPasswordInputLayout.setError(null);
 
-        if (!PinManager.verifyPin(requireContext(), currentPin)) {
-            binding.tilCurrentPin.setError(getString(R.string.error_current_pin_wrong));
+        if (!PinManager.verifyPin(requireContext(), currentPassword)) {
+            binding.currentPasswordInputLayout.setError(getString(R.string.error_current_master_password_wrong));
             return;
         }
-        binding.tilCurrentPin.setError(null);
+        binding.currentPasswordInputLayout.setError(null);
 
-        if (newPin.isEmpty()) {
-            binding.tilNewPin.setError(getString(R.string.error_pin_empty));
+        if (newPassword.isEmpty()) {
+            binding.newPasswordInputLayout.setError(getString(R.string.error_master_password_empty));
             return;
         }
-        binding.tilNewPin.setError(null);
+        binding.newPasswordInputLayout.setError(null);
 
-        if (newPin.length() < 4) {
-            binding.tilNewPin.setError(getString(R.string.error_pin_min_length));
+        if (newPassword.length() < 4) {
+            binding.newPasswordInputLayout.setError(getString(R.string.error_master_password_min_length));
             return;
         }
-        binding.tilNewPin.setError(null);
+        binding.newPasswordInputLayout.setError(null);
 
-        if (!newPin.equals(newPinConfirm)) {
-            binding.tilNewPinConfirm.setError(getString(R.string.error_pin_mismatch));
+        if (!newPassword.equals(confirmPassword)) {
+            binding.confirmPasswordInputLayout.setError(getString(R.string.error_master_password_mismatch));
             return;
         }
-        binding.tilNewPinConfirm.setError(null);
+        binding.confirmPasswordInputLayout.setError(null);
 
-        // PIN'i değiştir (verifyPin zaten yukarıda çağrıldı, doğrudan createPin kullan)
-        PinManager.createPin(requireContext(), newPin);
-        Toast.makeText(requireContext(), R.string.success_pin_changed, Toast.LENGTH_SHORT).show();
+        // Change password
+        PinManager.createPin(requireContext(), newPassword);
+        Toast.makeText(requireContext(), R.string.success_master_password_changed, Toast.LENGTH_SHORT).show();
 
-        // Alanları temizle
-        binding.etCurrentPin.setText("");
-        binding.etNewPin.setText("");
-        binding.etNewPinConfirm.setText("");
+        // Clear fields
+        binding.currentPasswordEditText.setText("");
+        binding.newPasswordEditText.setText("");
+        binding.confirmPasswordEditText.setText("");
     }
 
     /**
-     * Tüm verileri temizler.
-     * AlertDialog ile onay alındıktan sonra veritabanı ve PIN sıfırlanır.
+     * Clears all data.
+     * After confirmation with AlertDialog, database and password are reset.
      */
     private void handleClearData() {
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.dialog_clear_title)
                 .setMessage(R.string.dialog_clear_message)
                 .setPositiveButton(R.string.dialog_clear_yes, (dialog, which) -> {
-                    // Tüm veritabanı kayıtlarını sil
+                    // Delete all database records
                     viewModel.deleteAllItems();
-                    // PIN'i de sıfırla
+                    // Reset password and setup status
                     PinManager.clearAll(requireContext());
                     Toast.makeText(requireContext(), R.string.toast_data_cleared,
                             Toast.LENGTH_SHORT).show();
 
-                    // Login ekranına geri dön (tanımlı action ile)
+                    // Go back to login screen
                     Navigation.findNavController(requireView())
                             .navigate(R.id.action_settings_to_login);
                 })

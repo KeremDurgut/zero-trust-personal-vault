@@ -4,6 +4,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +13,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import me.keremdurgut.zero_trust_personal_vault.R;
 import me.keremdurgut.zero_trust_personal_vault.adapter.VaultAdapter;
@@ -24,14 +29,14 @@ import me.keremdurgut.zero_trust_personal_vault.databinding.FragmentVaultListBin
 import me.keremdurgut.zero_trust_personal_vault.viewmodel.VaultViewModel;
 
 /**
- * Parola Listesi Fragment'ı - Kayıtlı parolaları RecyclerView ile listeler.
- * LiveData ile veritabanı değişikliklerini reaktif olarak izler.
+ * Parola Listesi Fragment'ı - Kayıtlı parolaları listeler.
  */
 public class VaultListFragment extends Fragment implements VaultAdapter.OnItemActionListener {
 
     private FragmentVaultListBinding binding;
     private VaultViewModel viewModel;
     private VaultAdapter adapter;
+    private List<VaultItem> allItems = new ArrayList<>();
 
     @Nullable
     @Override
@@ -50,43 +55,64 @@ public class VaultListFragment extends Fragment implements VaultAdapter.OnItemAc
 
         // RecyclerView kurulumu
         adapter = new VaultAdapter(this);
-        binding.rvVaultItems.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.rvVaultItems.setAdapter(adapter);
+        binding.passwordsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.passwordsRecyclerView.setAdapter(adapter);
 
         // LiveData gözlemcisi - liste güncellendiğinde UI güncellenir
         viewModel.getAllItems().observe(getViewLifecycleOwner(), items -> {
-            adapter.setItems(items);
-            // Boş durum mesajını göster/gizle
-            if (items == null || items.isEmpty()) {
-                binding.tvEmptyMessage.setVisibility(View.VISIBLE);
-                binding.rvVaultItems.setVisibility(View.GONE);
-            } else {
-                binding.tvEmptyMessage.setVisibility(View.GONE);
-                binding.rvVaultItems.setVisibility(View.VISIBLE);
-            }
+            allItems = items != null ? items : new ArrayList<>();
+            updateList(allItems);
+            binding.storedCountText.setText(String.valueOf(allItems.size()));
         });
 
         // FAB - Yeni parola ekle
-        binding.fabAdd.setOnClickListener(v -> {
+        binding.addEntryFab.setOnClickListener(v -> {
             Bundle args = new Bundle();
             args.putLong("itemId", -1L);
             Navigation.findNavController(view)
                     .navigate(R.id.action_vaultList_to_addEditItem, args);
         });
 
-        // Ayarlar butonu
-        binding.btnSettings.setOnClickListener(v -> {
+        // Profil/Ayarlar butonu
+        binding.settingsButton.setOnClickListener(v -> {
             Navigation.findNavController(view)
                     .navigate(R.id.action_vaultList_to_settings);
+        });
+
+        // Arama özelliği
+        binding.searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterList(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
 
         // Verileri yükle
         viewModel.loadAllItems();
     }
 
-    /**
-     * Satıra tıklama - Düzenleme ekranına git.
-     */
+    private void filterList(String query) {
+        if (query.isEmpty()) {
+            updateList(allItems);
+        } else {
+            List<VaultItem> filtered = allItems.stream()
+                    .filter(item -> item.getTitle().toLowerCase().contains(query.toLowerCase()))
+                    .collect(Collectors.toList());
+            updateList(filtered);
+        }
+    }
+
+    private void updateList(List<VaultItem> items) {
+        adapter.setItems(items);
+        // Boş durum kontrolü yapılabilir
+    }
+
     @Override
     public void onItemClick(VaultItem item) {
         Bundle args = new Bundle();
@@ -95,9 +121,6 @@ public class VaultListFragment extends Fragment implements VaultAdapter.OnItemAc
                 .navigate(R.id.action_vaultList_to_addEditItem, args);
     }
 
-    /**
-     * Kopyala butonu - Parolayı çözüp panoya kopyalar ve Toast gösterir.
-     */
     @Override
     public void onCopyClick(VaultItem item) {
         String decryptedPassword = viewModel.decryptPassword(item.getEncryptedPassword());
@@ -109,25 +132,7 @@ public class VaultListFragment extends Fragment implements VaultAdapter.OnItemAc
             clipboard.setPrimaryClip(clip);
         }
 
-        // Toast mesajı göster
         Toast.makeText(requireContext(), R.string.toast_password_copied, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Sil butonu - AlertDialog ile onay alır, sonra siler.
-     */
-    @Override
-    public void onDeleteClick(VaultItem item) {
-        new AlertDialog.Builder(requireContext())
-                .setTitle(R.string.dialog_delete_title)
-                .setMessage(R.string.dialog_delete_message)
-                .setPositiveButton(R.string.dialog_delete_yes, (dialog, which) -> {
-                    viewModel.deleteItem(item.getId());
-                    Toast.makeText(requireContext(), R.string.toast_item_deleted,
-                            Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton(R.string.dialog_delete_no, null)
-                .show();
     }
 
     @Override

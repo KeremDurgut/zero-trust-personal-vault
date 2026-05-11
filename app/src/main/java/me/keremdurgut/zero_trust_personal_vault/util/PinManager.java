@@ -15,8 +15,25 @@ public class PinManager {
     private static final String PREF_NAME = "vault_prefs";
     private static final String KEY_PIN_HASH = "pin_hash";
     private static final String KEY_IS_SETUP_DONE = "is_setup_done";
+    private static final String KEY_IS_ONBOARDING_DONE = "is_onboarding_done";
     // Oturum boyunca PIN'i bellekte tut (şifreleme/çözme için lazım)
     private static String sessionPin = null;
+
+    /**
+     * Onboarding tamamlanmış mı kontrol eder.
+     */
+    public static boolean isOnboardingDone(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getBoolean(KEY_IS_ONBOARDING_DONE, false);
+    }
+
+    /**
+     * Onboarding durumunu kaydeder.
+     */
+    public static void setOnboardingDone(Context context, boolean done) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(KEY_IS_ONBOARDING_DONE, done).apply();
+    }
 
     /**
      * İlk kurulum yapılmış mı kontrol eder.
